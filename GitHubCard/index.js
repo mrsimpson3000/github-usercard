@@ -4,6 +4,12 @@
 */
 
 axios.get('https://api.github.com/users/mrsimpson3000')
+  .then(response => {
+    console.log(response.data);
+  })
+  .catch(error => {
+    console.log("the data was not returned", error);
+  })
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -26,7 +32,7 @@ axios.get('https://api.github.com/users/mrsimpson3000')
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['vtopham', 'jmadflo', 'leachcoding', 'Diddleslip', 'janecyyu'];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -47,6 +53,36 @@ const followersArray = [];
 </div>
 
 */
+
+function NewCard(data) {
+  const newCard = document.createElement('div'),
+        newImg = document.createElement('img'),
+        newCardInfo = document.createElement('div'),
+        newName = document.createElement('h3'),
+        newUsername = document.createElement('p'),
+        newLocation = document.createElement('p'),
+        newProfile = document.createElement('p'),
+        newHref = document.createElement('a'),
+        newFollowers = document.createElement('p'),
+        newFollowing = document.createElement('p'),
+        newBio = document.createElement('p');
+  newCard.classList.add("card");
+  newCardInfo.classList.add("card-info");
+  newName.classList.add("name");
+  newUsername.classList.add("username");
+  newImg.src = data.avatar_url;
+  newName.textContent = data.name;
+  newUsername.textContent = data.login;
+  newLocation.textContent = `Location: ${data.location}`;
+  newProfile.textContent = 'Profile: ';
+  newHref.href = data.html_url;
+  newHref.textContent = html_url;
+  newFollowers.textContent = `Followers: ${data.followers}`;
+  newFollowing.textContent = `Following: ${data.following}`;
+  newBio.textContent = `Bio: ${data.bio}`;
+
+  return newCard;
+}
 
 /* List of LS Instructors Github username's: 
   tetondan
