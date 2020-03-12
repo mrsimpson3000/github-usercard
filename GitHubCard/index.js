@@ -80,6 +80,9 @@ function NewCard(data) {
   newFollowers.textContent = `Followers: ${data.followers}`;
   newFollowing.textContent = `Following: ${data.following}`;
   newBio.textContent = `Bio: ${data.bio}`;
+  newCard.append(newImg, newCardInfo);
+  newCardInfo.append(newName, newUsername, newUsername, newProfile, newFollowers, newFollowing, newBio);
+  newProfile.append(newHref);
 
   return newCard;
 }
