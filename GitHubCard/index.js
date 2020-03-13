@@ -3,9 +3,12 @@
            https://api.github.com/users/<your name>
 */
 
+const entryPoint = document.querySelector('.cards');
+
 axios.get('https://api.github.com/users/mrsimpson3000')
   .then(response => {
     console.log(response.data);
+    entryPoint.append(NewCard(response.data));
   })
   .catch(error => {
     console.log("the data was not returned", error);
@@ -33,6 +36,28 @@ axios.get('https://api.github.com/users/mrsimpson3000')
 */
 
 const followersArray = ['vtopham', 'jmadflo', 'leachcoding', 'Diddleslip', 'janecyyu'];
+
+followersArray.forEach( follower => {
+axios.get(`https://api.github.com/users/${follower}`)
+  .then(response => {
+    console.log(response.data);
+    entryPoint.append(NewCard(response.data));
+  })
+  .catch(error => {
+    console.log("the data was not returned", error);
+  })
+})
+// followersArray.forEach(follower => {
+//   const newFollower = `https://api.github.com/users/${follower}`
+//   axios.get(newFollower)
+//   .then(response => {
+//     console.log(response.data);
+//     entryPoint.append(NewCard(response.data));
+//   })
+//   .catch(error => {
+//     console.log("the data was not returned", error);
+//   })
+// }
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -76,7 +101,7 @@ function NewCard(data) {
   newLocation.textContent = `Location: ${data.location}`;
   newProfile.textContent = 'Profile: ';
   newHref.href = data.html_url;
-  newHref.textContent = html_url;
+  newHref.textContent = data.html_url;
   newFollowers.textContent = `Followers: ${data.followers}`;
   newFollowing.textContent = `Following: ${data.following}`;
   newBio.textContent = `Bio: ${data.bio}`;
