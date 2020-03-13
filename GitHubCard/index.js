@@ -5,14 +5,15 @@
 
 const entryPoint = document.querySelector('.cards');
 
-axios.get('https://api.github.com/users/mrsimpson3000')
-  .then(response => {
-    console.log(response.data);
-    entryPoint.append(NewCard(response.data));
-  })
-  .catch(error => {
-    console.log("the data was not returned", error);
-  })
+// Commented out to try to do the stretch
+// axios.get('https://api.github.com/users/mrsimpson3000')
+//   .then(response => {
+//     console.log(response.data);
+//     entryPoint.append(NewCard(response.data));
+//   })
+//   .catch(error => {
+//     console.log("the data was not returned", error);
+//   })
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -35,18 +36,46 @@ axios.get('https://api.github.com/users/mrsimpson3000')
           user, and adding that card to the DOM.
 */
 
-const followersArray = ['vtopham', 'jmadflo', 'leachcoding', 'Diddleslip', 'janecyyu'];
+// Commented out all below to try to do the stretch
+// const followersArray = ['vtopham', 'jmadflo', 'leachcoding', 'Diddleslip', 'janecyyu'];
 
-followersArray.forEach( follower => {
-axios.get(`https://api.github.com/users/${follower}`)
+// followersArray.forEach( follower => {
+// axios.get(`https://api.github.com/users/${follower}`)
+//   .then(response => {
+//     console.log(response.data);
+//     entryPoint.append(NewCard(response.data));
+//   })
+//   .catch(error => {
+//     console.log("the data was not returned", error);
+//   })
+// })
+
+// Stretch Attempt
+axios.get('https://api.github.com/users/mrsimpson3000')
   .then(response => {
-    console.log(response.data);
+    // console.log(response.data);
     entryPoint.append(NewCard(response.data));
+    const followers = response.data.followers_url;
+    // console.log(followers);
+    axios.get(followers)
+    .then(response => {
+      // console.log(response.data);
+      response.data.forEach(item => {
+        // console.log(item.login);
+        const newFollower = `https://api.github.com/users/${item.login}`
+        axios.get(newFollower)
+        .then(response => {
+          entryPoint.append(NewCard(response.data));
+        })
+      })
+    })
   })
   .catch(error => {
     console.log("the data was not returned", error);
   })
-})
+
+
+
 // followersArray.forEach(follower => {
 //   const newFollower = `https://api.github.com/users/${follower}`
 //   axios.get(newFollower)
