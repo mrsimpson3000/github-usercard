@@ -3,6 +3,18 @@
            https://api.github.com/users/<your name>
 */
 
+const entryPoint = document.querySelector('.cards');
+
+// Commented out to try to do the stretch
+// axios.get('https://api.github.com/users/mrsimpson3000')
+//   .then(response => {
+//     console.log(response.data);
+//     entryPoint.append(NewCard(response.data));
+//   })
+//   .catch(error => {
+//     console.log("the data was not returned", error);
+//   })
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -24,7 +36,57 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+// Commented out all below to try to do the stretch
+// const followersArray = ['vtopham', 'jmadflo', 'leachcoding', 'Diddleslip', 'janecyyu'];
+
+// followersArray.forEach( follower => {
+// axios.get(`https://api.github.com/users/${follower}`)
+//   .then(response => {
+//     console.log(response.data);
+//     entryPoint.append(NewCard(response.data));
+//   })
+//   .catch(error => {
+//     console.log("the data was not returned", error);
+//   })
+// })
+
+// Stretch Attempt
+axios.get('https://api.github.com/users/mrsimpson3000')
+  .then(response => {
+    // console.log(response.data);
+    entryPoint.append(NewCard(response.data));
+    const followers = response.data.followers_url;
+    // console.log(followers);
+    axios.get(followers)
+    .then(response => {
+      // console.log(response.data);
+      response.data.forEach(item => {
+        // console.log(item.login);
+        const newFollower = `https://api.github.com/users/${item.login}`
+        axios.get(newFollower)
+        .then(response => {
+          entryPoint.append(NewCard(response.data));
+        })
+      })
+    })
+  })
+  .catch(error => {
+    console.log("the data was not returned", error);
+  })
+
+
+
+// followersArray.forEach(follower => {
+//   const newFollower = `https://api.github.com/users/${follower}`
+//   axios.get(newFollower)
+//   .then(response => {
+//     console.log(response.data);
+//     entryPoint.append(NewCard(response.data));
+//   })
+//   .catch(error => {
+//     console.log("the data was not returned", error);
+//   })
+// }
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -45,6 +107,39 @@ const followersArray = [];
 </div>
 
 */
+
+function NewCard(data) {
+  const newCard = document.createElement('div'),
+        newImg = document.createElement('img'),
+        newCardInfo = document.createElement('div'),
+        newName = document.createElement('h3'),
+        newUsername = document.createElement('p'),
+        newLocation = document.createElement('p'),
+        newProfile = document.createElement('p'),
+        newHref = document.createElement('a'),
+        newFollowers = document.createElement('p'),
+        newFollowing = document.createElement('p'),
+        newBio = document.createElement('p');
+  newCard.classList.add("card");
+  newCardInfo.classList.add("card-info");
+  newName.classList.add("name");
+  newUsername.classList.add("username");
+  newImg.src = data.avatar_url;
+  newName.textContent = data.name;
+  newUsername.textContent = data.login;
+  newLocation.textContent = `Location: ${data.location}`;
+  newProfile.textContent = 'Profile: ';
+  newHref.href = data.html_url;
+  newHref.textContent = data.html_url;
+  newFollowers.textContent = `Followers: ${data.followers}`;
+  newFollowing.textContent = `Following: ${data.following}`;
+  newBio.textContent = `Bio: ${data.bio}`;
+  newCard.append(newImg, newCardInfo);
+  newCardInfo.append(newName, newUsername, newUsername, newProfile, newFollowers, newFollowing, newBio);
+  newProfile.append(newHref);
+
+  return newCard;
+}
 
 /* List of LS Instructors Github username's: 
   tetondan
